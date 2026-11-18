@@ -298,15 +298,17 @@ const useScreenAssets = () => {
   useEffect(() => {
     const img = new Image();
     img.src = staticFile('wallpaper.png');
+    const icon = new Image();
+    icon.src = staticFile('logo-icon.png');
     const fonts = Promise.all([
       new FontFace('Inter', `url(${staticFile('Inter-Regular.otf')})`, {weight: '400'}).load(),
       new FontFace('Inter', `url(${staticFile('Inter-SemiBold.otf')})`, {weight: '600'}).load(),
       new FontFace('Inter Display', `url(${staticFile('InterDisplay-SemiBold.otf')})`, {weight: '600'}).load(),
     ]).then((faces) => faces.forEach((f) => (document.fonts as any).add(f)));
-    Promise.all([img.decode(), fonts])
+    Promise.all([img.decode(), icon.decode(), fonts])
       .then(() => document.fonts.load('16px "Noto Color Emoji"', '❤️'))
       .then(() => {
-        setAssets(prepareAssets(img));
+        setAssets(prepareAssets(img, icon));
         continueRender(handle);
       });
   }, [handle]);

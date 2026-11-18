@@ -64,16 +64,20 @@ const wrap = (ctx: CanvasRenderingContext2D, text: string, maxW: number) => {
 export type ScreenAssets = {
   wallpaper: HTMLImageElement;
   blurred: HTMLCanvasElement;
+  icon: HTMLImageElement;
 };
 
-export const prepareAssets = (img: HTMLImageElement): ScreenAssets => {
+export const prepareAssets = (
+  img: HTMLImageElement,
+  icon: HTMLImageElement,
+): ScreenAssets => {
   const blurred = document.createElement('canvas');
   blurred.width = TEX_W;
   blurred.height = TEX_H;
   const b = blurred.getContext('2d')!;
   b.filter = `blur(${28 * TEX_SCALE}px) saturate(1.6)`;
   drawCover(b, img, TEX_W, TEX_H);
-  return {wallpaper: img, blurred};
+  return {wallpaper: img, blurred, icon};
 };
 
 const drawCover = (
@@ -273,19 +277,15 @@ export const drawScreen = (
     // App icon
     const ix = NOTIF.pad;
     const iy = NOTIF.pad + 1;
-    const ig = ctx.createLinearGradient(0, iy, 0, iy + NOTIF.icon);
-    ig.addColorStop(0, '#8a1c2b');
-    ig.addColorStop(1, '#5a0f1a');
-    ctx.fillStyle = ig;
+    ctx.save();
     roundRect(ctx, ix, iy, NOTIF.icon, NOTIF.icon, 9);
-    ctx.fill();
-    ctx.fillStyle = '#f4e6cf';
-    ctx.textAlign = 'center';
-    ctx.font = `italic 600 25px Georgia, "DejaVu Serif", serif`;
-    ctx.fillText('P', ix + NOTIF.icon / 2, iy + 28);
-    ctx.strokeStyle = 'rgba(244,230,207,0.55)';
-    ctx.lineWidth = 0.8;
-    roundRect(ctx, ix + 4, iy + 4, NOTIF.icon - 8, NOTIF.icon - 8, 6);
+    ctx.clip();
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(assets.icon, ix, iy, NOTIF.icon, NOTIF.icon);
+    ctx.restore();
+    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    ctx.lineWidth = 0.5;
+    roundRect(ctx, ix, iy, NOTIF.icon, NOTIF.icon, 9);
     ctx.stroke();
 
     // Text
