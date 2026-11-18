@@ -193,7 +193,7 @@ export const drawScreen = (
   ctx.fillText('mercredi 18 novembre', W / 2, 108);
   ctx.font = `600 104px ${DISPLAY}`;
   ctx.fillStyle = 'rgba(255,255,255,0.96)';
-  ctx.fillText('18:30', W / 2, 205);
+  ctx.fillText('11:36', W / 2, 205);
   ctx.shadowBlur = 0;
   ctx.shadowColor = 'transparent';
 

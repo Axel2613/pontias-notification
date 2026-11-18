@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {
   AbsoluteFill,
+  Audio,
   Easing,
   continueRender,
   delayRender,
@@ -421,6 +422,7 @@ export const PontiasAd: React.FC = () => {
 
   return (
     <AbsoluteFill style={{backgroundColor: '#ffffff'}}>
+      <Audio src={staticFile('soundtrack.wav')} />
       {/* barely-there studio falloff on the white sweep */}
       <AbsoluteFill
         style={{
