@@ -348,8 +348,12 @@ export const PontiasAd: React.FC = () => {
     extrapolateRight: 'clamp',
   });
 
-  if (assets) {
+  // Redraw / re-upload the screen only when its content changes (big perf win
+  // with software WebGL: before the notification and once the spring settles).
+  const screenKey = `${notifSpring.toFixed(4)}|${notifOpacity.toFixed(3)}`;
+  if (assets && (canvas as any).__key !== screenKey) {
     drawScreen(canvas, assets, {progress: notifSpring, opacity: notifOpacity});
+    (canvas as any).__key = screenKey;
     texture.needsUpdate = true;
   }
 
